@@ -1,395 +1,76 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MediShop — Professional Healthcare Store</title>
-  <style>
-    /* Global Variables for easy theme management */
-    :root {
-      --primary: #0ea5b7;
-      --primary-dark: #0b8a99;
-      --secondary: #0b3b66;
-      --bg-light: #f1f5f9;
-      --white: #ffffff;
-      --text-dark: #1e293b;
-      --text-muted: #64748b;
-      --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Reset & Base Styles */
-    *, *::before, *::after { box-sizing: border-box; }
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background-color: var(--bg-light);
-      color: var(--text-dark);
-      overflow-x: hidden;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    /* Navigation Header */
-    header {
-      background: var(--white);
-      border-bottom: 1px solid #e2e8f0;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    .header-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 0;
-      gap: 15px;
-    }
-
-    .logo-area .brand {
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--secondary);
-      text-decoration: none;
-      letter-spacing: -0.5px;
-    }
-
-    .logo-area .tagline {
-      display: block;
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: -2px;
-    }
-
-    .search-bar {
-      flex: 1;
-      max-width: 500px;
-    }
-
-    .search-bar input {
-      width: 100%;
-      padding: 10px 15px;
-      border-radius: 8px;
-      border: 1px solid #cbd5e1;
-      background: #f8fafc;
-      outline: none;
-      transition: 0.3s;
-    }
-
-    .search-bar input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(14, 165, 183, 0.15);
-      background: white;
-    }
-
-    .nav-actions {
-      display: flex;
-      gap: 10px;
-    }
-
-    .btn {
-      padding: 9px 16px;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      font-size: 14px;
-      transition: 0.2s;
-      border: none;
-    }
-
-    .btn-logout { background: #fee2e2; color: #dc2626; }
-    .btn-cart { background: var(--primary); color: white; }
-    .btn:hover { transform: translateY(-1px); opacity: 0.9; }
-
-    /* Hero & Filter Section */
-    .hero {
-      padding: 30px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    .hero h1 { font-size: 28px; margin: 0; color: var(--secondary); }
-    .hero p { color: var(--text-muted); margin: 5px 0 0; }
-
-    .filter-group {
-      display: flex;
-      gap: 10px;
-    }
-
-    .filter-group select {
-      padding: 8px 12px;
-      border-radius: 6px;
-      border: 1px solid #cbd5e1;
-      background: white;
-      cursor: pointer;
-    }
-
-    /* Product Grid */
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 25px;
-      padding-bottom: 50px;
-    }
-
-    .product-card {
-      background: var(--white);
-      border-radius: 15px;
-      padding: 15px;
-      border: 1px solid #e2e8f0;
-      transition: all 0.3s ease;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .product-card:hover {
-      transform: translateY(-8px);
-      box-shadow: var(--shadow);
-    }
-
-    .img-container {
-      width: 100%;
-      height: 180px;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 12px;
-      background: #f8fafc;
-    }
-
-    .img-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .cat-tag {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: var(--primary);
-      margin-bottom: 5px;
-    }
-
-    .p-name {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      color: var(--secondary);
-    }
-
-    .p-desc {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.4;
-      flex-grow: 1;
-    }
-
-    .p-price {
-      font-size: 20px;
-      font-weight: 800;
-      margin: 15px 0;
-      color: var(--text-dark);
-    }
-
-    .card-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    .action-btn {
-      flex: 1;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      border: 1px solid #e2e8f0;
-      background: #f8fafc;
-      transition: 0.2s;
-    }
-
-    .action-btn.primary {
-      background: var(--primary);
-      color: white;
-      border: none;
-    }
-
-    .action-btn:hover { background: #e2e8f0; }
-    .action-btn.primary:hover { background: var(--primary-dark); }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 40px 0;
-      background: white;
-      border-top: 1px solid #e2e8f0;
-      color: var(--text-muted);
-      font-size: 14px;
-    }
-
-    /* MOBILE RESPONSIVE FIXES */
-    @media (max-width: 768px) {
-      .header-inner { flex-direction: column; text-align: center; }
-      .search-bar { width: 100%; order: 3; }
-      .nav-actions { width: 100%; justify-content: center; }
-      .hero { flex-direction: column; align-items: flex-start; }
-      .product-grid { grid-template-columns: 1fr; } /* Ek line mein ek medicine on mobile */
-      .img-container { height: 220px; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+   <link rel="stylesheet" href="style.css"
 </head>
 <body>
+    <div class="container">
 
-  <header>
-    <div class="container header-inner">
-      <div class="logo-area">
-        <a href="#" class="brand">MediShop</a>
-        <span class="tagline">Your Health, Our Priority</span>
-      </div>
-
-      <div class="search-bar">
-        <input type="text" placeholder="Search medicines, health drinks, devices...">
-      </div>
-
-      <div class="nav-actions">
-        <a href="index.html" class="btn btn-logout">Logout</a>
-        <button class="btn btn-cart">Cart (0)</button>
-      </div>
-    </div>
-  </header>
-
-  <main class="container">
-    <section class="hero">
-      <div>
-        <h1>Medical Catalogue</h1>
-        <p>Premium healthcare products delivered at Dhanbad.</p>
-      </div>
-      <div class="filter-group">
-        <select><option>Categories</option><option>OTC</option><option>Equipment</option></select>
-        <select><option>Sort By</option><option>Price: Low-High</option></select>
-      </div>
-    </section>
-
-    <div class="product-grid">
-      <article class="product-card">
-        <div class="img-container">
-          <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=500" 
-               onerror="this.src='https://via.placeholder.com/500x300?text=Paracetamol'" alt="Medicine">
-        </div>
-        <span class="cat-tag">Pain Relief</span>
-        <div class="p-name">Paracetamol 500mg</div>
-        <p class="p-desc">Fast-acting relief from fever and common body aches.</p>
-        <div class="p-price">₹40.00</div>
-        <div class="card-actions">
-          <button class="action-btn primary">Add to Cart</button>
-          <button class="action-btn">View</button>
-        </div>
-      </article>
-
-      <article class="product-card">
-        <div class="img-container">
-          <img src="https://images.unsplash.com/photo-1550572017-ed20015ade74?auto=format&fit=crop&w=500" 
-               onerror="this.src='https://via.placeholder.com/500x300?text=Cough+Syrup'" alt="Cough Syrup">
-        </div>
-        <span class="cat-tag">OTC Medicine</span>
-        <div class="p-name">Advanced Cough Syrup</div>
-        <p class="p-desc">Effective for both dry and productive cough relief.</p>
-        <div class="p-price">₹145.00</div>
-        <div class="card-actions">
-          <button class="action-btn primary">Add to Cart</button>
-          <button class="action-btn">View</button>
-        </div>
-      </article>
-
-      <article class="product-card">
-        <div class="img-container">
-          <img src="https://images.unsplash.com/photo-1616679911721-eff6eec18fcd?auto=format&fit=crop&w=500" 
-               onerror="this.src='https://via.placeholder.com/500x300?text=Vitamins'" alt="Vitamins">
-        </div>
-        <span class="cat-tag">Supplements</span>
-        <div class="p-name">Z-Vitamin Multivitamins</div>
-        <p class="p-desc">Daily essential vitamins for immunity and strength.</p>
-        <div class="p-price">₹320.00</div>
-        <div class="card-actions">
-          <button class="action-btn primary">Add to Cart</button>
-          <button class="action-btn">View</button>
-        </div>
-      </article>
-
-      <article class="product-card">
-        <div class="img-container">
-          <img src="https://images.unsplash.com/photo-1631549916768-4119b2e5f926?auto=format&fit=crop&w=500" 
-               onerror="this.src='https://via.placeholder.com/500x300?text=Thermometer'" alt="Thermometer">
-        </div>
-        <span class="cat-tag">Medical Devices</span>
-        <div class="p-name">Digital Thermometer</div>
-        <p class="p-desc">Highly accurate and fast reading digital sensor.</p>
-        <div class="p-price">₹210.00</div>
-        <div class="card-actions">
-          <button class="action-btn primary">Add to Cart</button>
-          <button class="action-btn">View</button>
-        </div>
-      </article>
-
-      <article class="product-card">
-        <div class="img-container">
-          <img src="https://images.unsplash.com/photo-1583454110551-21f2fa20217c?auto=format&fit=crop&w=500" 
-               onerror="this.src='https://via.placeholder.com/500x300?text=First+Aid'" alt="First Aid">
-        </div>
-        <span class="cat-tag">Emergency</span>
-        <div class="p-name">Home First Aid Kit</div>
-        <p class="p-desc">Essential kit containing bandages, wipes, and more.</p>
-        <div class="p-price">₹550.00</div>
-        <div class="card-actions">
-          <button class="action-btn primary">Add to Cart</button>
-          <button class="action-btn">View</button>
-        </div>
-      </article>
-
-      <article class="product-card">
-        <div class="img-container">
-          <img src="https://images.unsplash.com/photo-1612810806563-4cb8275250ff?auto=format&fit=crop&w=500" 
-               onerror="this.src='https://via.placeholder.com/500x300?text=Omega3'" alt="Omega 3">
-        </div>
-        <span class="cat-tag">Supplements</span>
-        <div class="p-name">Omega-3 Fish Oil</div>
-        <p class="p-desc">Rich in DHA and EPA for heart and brain health.</p>
-        <div class="p-price">₹890.00</div>
-        <div class="card-actions">
-          <button class="action-btn primary">Add to Cart</button>
-          <button class="action-btn">View</button>
-        </div>
-      </article>
+    <div class="login-box">
+        <img src="uu.png" class="logo">
     </div>
 
-    <footer>
-      <p>&copy; <span id="year"></span> MediShop. Designed for Prince Sinha's Project.</p>
-    </footer>
-  </main>
+    <div class="greet">
+        <h1>WELCOME BACK!</h1>
+        <p>Login To Your Account</p>
+    </div>
 
-  <script>
-    // Update year automatically
-    document.getElementById('year').textContent = new Date().getFullYear();
+    <form onsubmit="login(event)">
+        <label>Email / Mobile No.</label>
+        <input type="text">
 
-    // Simple Cart Counter (Just for UI effect)
-    let count = 0;
-    const cartBtn = document.querySelector('.btn-cart');
-    document.querySelectorAll('.action-btn.primary').forEach(button => {
-      button.addEventListener('click', () => {
-        count++;
-        cartBtn.textContent = `Cart (${count})`;
-      });
-    });
-  </script>
+        <label>Password</label>
+        <input type="text" id="password">
+
+       <a href="password.html" class="forget">Forget Password?</a>
+       
+
+
+
+        <button class="login-btn">Login</button>
+    </form>
+
+    <div class="signup">
+        Don't have account?
+        <a href="Registration.html">SignUp</a>
+    </div>
+
+    </div>
+    <script>
+    function login(event) {
+        // Form ko refresh hone se rokne ke liye
+        event.preventDefault();
+
+        // **Dhyan dein:** Right now, bina koi password check kiye, 
+        // hum direct dusre page par redirect kar rahe hain.
+        // Dusre file ka exact name neeche mention karein (e.g., shop.html)
+        window.location.href = "shop.html"; 
+    }
+</script>
+<script>
+    function login(event) {
+        event.preventDefault(); // Form refresh hone se rokne ke liye
+
+        // Inputs ki values nikalna
+        const email = document.querySelector('input[type="text"]').value;
+        const password = document.getElementById('password').value;
+
+        // Simple Validation (Yahan aap apna manchaha email/pass set kar sakte hain)
+        if (email === "princesinha2628@gmail.com" && password === "12345") {
+           
+            window.location.href = "shop.html"; // Aapki dusri file ka naam
+        } else {
+            alert("Invalid Email or Password. Please try again.");
+        }
+    }
+</script>
 </body>
 </html>
+
+
+
+
+
