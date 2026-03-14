@@ -1,76 +1,262 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-   <link rel="stylesheet" href="style.css"
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MediShop Plus — Your Digital Pharmacy</title>
+  <style>
+    :root {
+      --primary: #0ea5b7;
+      --secondary: #0b3b66;
+      --accent: #ff6b6b;
+      --bg-light: #f4f7fe;
+      --white: #ffffff;
+      --card-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    }
+
+    * { box-sizing: border-box; transition: all 0.3s ease; }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-light);
+      color: #333;
+    }
+
+    /* Navbar Upgrade */
+    header {
+      background: var(--white);
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+    }
+    .logo { font-size: 26px; font-weight: 800; color: var(--secondary); text-decoration: none; }
+    .logo span { color: var(--primary); }
+
+    .search-container { flex: 0.6; position: relative; }
+    .search-container input {
+      width: 100%;
+      padding: 12px 20px;
+      border-radius: 30px;
+      border: 1px solid #ddd;
+      outline: none;
+      background: #f9f9f9;
+    }
+    .search-container input:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 8px rgba(14,165,183,0.2); }
+
+    /* Promo Banner */
+    .banner {
+      background: linear-gradient(135deg, var(--secondary), var(--primary));
+      color: white;
+      padding: 40px 20px;
+      border-radius: 20px;
+      margin: 20px auto;
+      max-width: 1160px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .banner h2 { font-size: 32px; margin: 0; }
+    .banner p { opacity: 0.9; font-size: 18px; }
+
+    /* Category Chips */
+    .categories {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+    .cat-chip {
+      padding: 10px 25px;
+      background: white;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--card-shadow);
+    }
+    .cat-chip:hover, .cat-chip.active { background: var(--primary); color: white; }
+
+    /* Product Cards Upgrade */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+      max-width: 1200px;
+      margin: 0 auto 50px;
+      padding: 0 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.03);
+      box-shadow: var(--card-shadow);
+      position: relative;
+    }
+    .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+    
+    .badge {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: var(--accent);
+      color: white;
+      padding: 5px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .card-img { width: 100%; height: 200px; object-fit: cover; background: #eee; }
+    .card-body { padding: 20px; }
+    .price-tag { font-size: 22px; font-weight: 800; color: var(--secondary); margin: 10px 0; }
+    
+    .add-btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      background: var(--primary);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .add-btn:active { transform: scale(0.95); }
+
+    /* Floating Cart Notification */
+    .cart-toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--secondary);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      display: none;
+      animation: slideUp 0.5s ease;
+    }
+
+    @keyframes slideUp { from { transform: translateY(100px); } to { transform: translateY(0); } }
+
+    @media (max-width: 768px) {
+      .nav-container { flex-direction: column; gap: 15px; }
+      .search-container { width: 100%; }
+      .banner h2 { font-size: 24px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
 
-    <div class="login-box">
-        <img src="uu.png" class="logo">
+<header>
+  <div class="nav-container">
+    <a href="#" class="logo">Medi<span>Shop</span></a>
+    <div class="search-container">
+      <input type="text" placeholder="Search medicines, equipment, wellness...">
+    </div>
+    <div style="display: flex; gap: 15px;">
+      <a href="index.html" style="text-decoration: none; color: #666; font-weight: bold; align-self: center;">Logout</a>
+      <button class="add-btn" style="padding: 10px 20px;">🛒 <span id="cart-count">0</span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="banner">
+    <h2>Dhanbad's Fast Medical Delivery! 🚀</h2>
+    <p>Flat 20% Off on Prescription Medicines. Use Code: <b>PRINCE20</b></p>
+  </div>
+
+  <div class="categories">
+    <div class="cat-chip active">All</div>
+    <div class="cat-chip">Medicines</div>
+    <div class="cat-chip">Health Drinks</div>
+    <div class="cat-chip">Devices</div>
+    <div class="cat-chip">Baby Care</div>
+  </div>
+
+  <div class="product-grid">
+    <div class="card">
+      <div class="badge">Bestseller</div>
+      <img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500" class="card-img" alt="Med">
+      <div class="card-body">
+        <h3 style="margin:0">Paracetamol 500mg</h3>
+        <p style="color:#777; font-size: 14px;">10 Tablets | Pain Relief</p>
+        <div class="price-tag">₹42.00</div>
+        <button class="add-btn" onclick="addToCart()">Add to Cart</button>
+      </div>
     </div>
 
-    <div class="greet">
-        <h1>WELCOME BACK!</h1>
-        <p>Login To Your Account</p>
+    <div class="card">
+      <div class="badge" style="background: #27ae60;">Natural</div>
+      <img src="https://images.unsplash.com/photo-1616679911721-eff6eec18fcd?w=500" class="card-img" alt="Med">
+      <div class="card-body">
+        <h3 style="margin:0">Herbal Honey Syrup</h3>
+        <p style="color:#777; font-size: 14px;">100ml | Cough Relief</p>
+        <div class="price-tag">₹185.00</div>
+        <button class="add-btn" onclick="addToCart()">Add to Cart</button>
+      </div>
     </div>
 
-    <form onsubmit="login(event)">
-        <label>Email / Mobile No.</label>
-        <input type="text">
-
-        <label>Password</label>
-        <input type="text" id="password">
-
-       <a href="password.html" class="forget">Forget Password?</a>
-       
-
-
-
-        <button class="login-btn">Login</button>
-    </form>
-
-    <div class="signup">
-        Don't have account?
-        <a href="Registration.html">SignUp</a>
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=500" class="card-img" alt="Med">
+      <div class="card-body">
+        <h3 style="margin:0">Infrared Thermometer</h3>
+        <p style="color:#777; font-size: 14px;">Contactless | High Precision</p>
+        <div class="price-tag">₹1,299.00</div>
+        <button class="add-btn" onclick="addToCart()">Add to Cart</button>
+      </div>
     </div>
 
+    <div class="card">
+        <div class="badge">Sale</div>
+      <img src="https://images.unsplash.com/photo-1603398938378-e54eab446f95?w=500" class="card-img" alt="Med">
+      <div class="card-body">
+        <h3 style="margin:0">Compact First Aid Kit</h3>
+        <p style="color:#777; font-size: 14px;">Emergency Essentials | Travel</p>
+        <div class="price-tag">₹499.00</div>
+        <button class="add-btn" onclick="addToCart()">Add to Cart</button>
+      </div>
     </div>
-    <script>
-    function login(event) {
-        // Form ko refresh hone se rokne ke liye
-        event.preventDefault();
+  </div>
+</main>
 
-        // **Dhyan dein:** Right now, bina koi password check kiye, 
-        // hum direct dusre page par redirect kar rahe hain.
-        // Dusre file ka exact name neeche mention karein (e.g., shop.html)
-        window.location.href = "shop.html"; 
-    }
-</script>
+<div class="cart-toast" id="toast">Item added to cart! 💊</div>
+
 <script>
-    function login(event) {
-        event.preventDefault(); // Form refresh hone se rokne ke liye
+  let count = 0;
+  function addToCart() {
+    count++;
+    document.getElementById('cart-count').innerText = count;
+    
+    // Show toast
+    const toast = document.getElementById('toast');
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 2000);
+  }
 
-        // Inputs ki values nikalna
-        const email = document.querySelector('input[type="text"]').value;
-        const password = document.getElementById('password').value;
-
-        // Simple Validation (Yahan aap apna manchaha email/pass set kar sakte hain)
-        if (email === "princesinha2628@gmail.com" && password === "12345") {
-           
-            window.location.href = "shop.html"; // Aapki dusri file ka naam
-        } else {
-            alert("Invalid Email or Password. Please try again.");
-        }
-    }
+  // Active chip handler
+  const chips = document.querySelectorAll('.cat-chip');
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+    });
+  });
 </script>
+
 </body>
 </html>
-
-
-
-
-
